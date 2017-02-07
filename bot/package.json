@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/bot.js",
   "dependencies": {
-    "token-headless-bot": "git+ssh://git@github.com:tokenbrowser/token-headless-bot.git"
+    "token-headless-bot": "file:token-headless-bot"
   },
   "devDependencies": {},
   "scripts": {

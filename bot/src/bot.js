@@ -3,27 +3,45 @@ const Bot = require('token-headless-bot').Bot;
 
 let bot = new Bot();
 
+
 function sendEth(session, value) {
-  session.reply(SOFA.Payment({
-    status: "unverified",
-    value: value,
-    txHash: '0x0'
-  }));
+  session.rpc({
+    method: "sendTransaction",
+    params: {
+      to: session.get('paymentAddress'),
+      value: value
+    }
+  }, (session, error, result) => {
+    if (result) {
+      session.reply(SOFA.Payment({
+        status: "unverified",
+        value: value,
+        txHash: result.tx_hash
+      }));
+    }
+  });
 }
 
 
 bot.hear('SOFA::PaymentRequest:', (session, message) => {
   let value = parseInt(message.content.value.slice(2), 16);
-  if (value < 1000000000000000000) {
-    session.reply("Ok! I'll send you some cash.")
+  if (!session.get("paymentAddress")) {
+    session.reply("I don't know where to pay you! I'm requesting your client to initialize, one sec.");
+    session.reply(SOFA.InitRequest({
+      values: ['paymentAddress', 'language']
+    }));
+    return;
+  }
+  if (value < 100000000000000) {
     if (session.get('human')) {
+      session.reply("Ok! I'll send you some cash.")
       sendEth(session, message.content.value)
     } else {
       session.set('ethRequestPendingCaptcha', message.content.value)
       session.openThread('captcha')
     }
   } else {
-    session.reply("Way too much. If you ask for something more like $1 maybe we can talk.");
+    session.reply("I have a 100000000000000 Wei maximum.");
   }
 })
 
@@ -62,9 +80,14 @@ bot
   })
 
 
-
 bot.hear('ping', (session, message) => {
-  session.reply(SOFA.Message({body: "pong"}));
+  session.rpc({
+    method: "ping",
+    params: {}
+  }, (session, error, result) => {
+    console.log(result);
+    session.reply(result.message);
+  });
 })
 
 bot.hear('reset', (session, message) => {
@@ -73,15 +96,14 @@ bot.hear('reset', (session, message) => {
 })
 
 bot.hear('SOFA::Init:', (session, message) => {
-  session.reply("I will pay you at "+message.content.paymentAddress+" and speak to you in "+message.content.language);
+  for(let k in message.content) {
+    session.set(k, message.content[k]);
+  }
+  session.reply("Initialized with paymentAddress "+message.content.paymentAddress+" and language "+message.content.language);
 })
 
 bot.hear('SOFA::Payment:', (session, message) => {
   session.reply("Thanks for the loot.");
-})
-
-bot.hear('SOFA::PaymentRequest:', (session, message) => {
-  session.reply("I ain't paying you a dime.");
 })
 
 bot.hear('initMe', (session, message) => {
@@ -99,7 +121,7 @@ bot.hear('begMe', (session, message) => {
 })
 
 bot.hear('SOFA::Command:', (session, message) => {
-  session.reply("I was commanded: ", message.content.value);
+  session.reply("I was commanded: "+message.content.value);
 })
 
 bot.hear('buttons', (session, message) => {
@@ -143,5 +165,5 @@ bot.hear('groups', (session, message) => {
 
 
 bot.hear('SOFA::Message:', (session, message) => {
-  session.reply("I hear you "+session.address);
+  session.reply("Hello "+session.address+"! You can say these things:\n1. ping\n2. reset\n3. initMe\n4. buttons\n 5. groups");
 });

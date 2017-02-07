@@ -1,0 +1,39 @@
+{
+  "name": "Token Sofa App",
+  "description": "Foundation for building a SOFA app for Token (Chat Bot / Web View) Edit",
+  "repository": "https://github.com/tokenbrowser/token-sofa-app",
+  "env": {
+    "DISPLAY_NAME": {
+      "description": "Full display name for your app",
+      "required": false
+    },
+    "TOKEN_ADDRESS": {
+      "description": "Ethereum address"
+    },
+    "TOKEN_CLIENT_SEED": {
+      "description": "12 word backup phrase"
+    }
+  },
+  "formation": {
+    "client": {
+      "quantity": 1,
+      "size": "free"
+    },
+    "bot": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [
+      {
+        "plan": "heroku-redis:hobby-dev"
+      }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },{
+      "url": "heroku/gradle"
+    }
+  ]
+}
