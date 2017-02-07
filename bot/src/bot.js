@@ -3,8 +3,73 @@ const Bot = require('token-headless-bot').Bot;
 
 let bot = new Bot();
 
+function sendEth(session, value) {
+  session.reply(SOFA.Payment({
+    status: "unverified",
+    value: value,
+    txHash: '0x0'
+  }));
+}
+
+
+bot.hear('SOFA::PaymentRequest:', (session, message) => {
+  let value = parseInt(message.content.value.slice(2), 16);
+  if (value < 1000000000000000000) {
+    session.reply("Ok! I'll send you some cash.")
+    if (session.get('human')) {
+      sendEth(session, message.content.value)
+    } else {
+      session.set('ethRequestPendingCaptcha', message.content.value)
+      session.openThread('captcha')
+    }
+  } else {
+    session.reply("Way too much. If you ask for something more like $1 maybe we can talk.");
+  }
+})
+
+
+bot
+  .thread('captcha')
+  .onOpen = (session) => {
+    session.reply("I need you to prove you're human. Type the numbers below:")
+    session.reply("123")
+    session.set('captcha', '123')
+    session.set('captcha_attempts', 3)
+    session.setState('awaiting_captcha_solve')
+  }
+
+
+bot
+  .thread('captcha')
+  .state('awaiting_captcha_solve')
+  .hear('SOFA::Message:', (session, message) => {
+    console.log(message.content.body)
+    console.log(session.get('captcha'))
+    if (message.content.body == session.get('captcha')) {
+      session.set('human', true)
+      session.reply('Correct!')
+      sendEth(session, session.get('ethRequestPendingCaptcha'))
+      session.closeThread()
+    } else {
+      if (session.get('captcha_attempts') > 0) {
+        session.set('captcha_attempts', session.get('captcha_attempts')-1)
+        session.reply('Incorrect, try again')
+      } else {
+        session.reply('Too many failures. #bye')
+        session.closeThread()
+      }
+    }
+  })
+
+
+
 bot.hear('ping', (session, message) => {
   session.reply(SOFA.Message({body: "pong"}));
+})
+
+bot.hear('reset', (session, message) => {
+  session.reset()
+  session.reply(SOFA.Message({body: "I've reset your state."}));
 })
 
 bot.hear('SOFA::Init:', (session, message) => {
