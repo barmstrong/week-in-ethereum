@@ -32,7 +32,8 @@ bot.hear('SOFA::PaymentRequest:', (session, message) => {
     }));
     return;
   }
-  if (value < 100000000000000) {
+
+  if (value < 546881485900000000) {
     if (session.get('human')) {
       session.reply("Ok! I'll send you some cash.")
       sendEth(session, message.content.value)
@@ -41,7 +42,7 @@ bot.hear('SOFA::PaymentRequest:', (session, message) => {
       session.openThread('captcha')
     }
   } else {
-    session.reply("I have a 100000000000000 Wei maximum.");
+    session.reply("I have a $5 maximum.");
   }
 })
 
