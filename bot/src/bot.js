@@ -16,7 +16,7 @@ function sendEth(session, value) {
       session.reply(SOFA.Payment({
         status: "unverified",
         value: value,
-        txHash: result.tx_hash
+        txHash: result.txHash
       }));
     }
   });
