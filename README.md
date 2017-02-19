@@ -16,7 +16,7 @@ Click Fork in the top right and get your own copy of this repo.
 
 Visit Ian Coleman's [bip39 generator page](https://iancoleman.github.io/bip39/) and select "12 words" and "Ethereum", then click "Generate".
 
-![generate seed](http://i.imgur.com/i8NDduY.png)
+![generate seed](http://i.imgur.com/1emz1uw.png)
 
 Copy the 12 word phrase and store this in a password manager or somewhere secure (you don't need any other info on that page besides the 12 words). If you lose this phrase you will lose access to your money. Likewise, if an attacker gets access to it they can take your money.
 
