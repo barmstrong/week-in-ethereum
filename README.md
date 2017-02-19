@@ -12,7 +12,9 @@ It handles the complex logic of generating [SOFA](https://www.tokenbrowser.com/t
 
 ### 2. Generate a 12 word seed and store it securely
 
-### 3. Deploy to heroku
+### 3. Deploy to Heroku (or with Docker)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tokenbrowser/token-sofa-app)
 
 ### 4. Connect to your app
 
@@ -21,22 +23,10 @@ It handles the complex logic of generating [SOFA](https://www.tokenbrowser.com/t
 
 ## Architecture
 
-This bot has a Redis backend for storage. It converts your 
+This bot has a Redis backend for storage. It converts your standard messages into SOFA messages, and then encrypts them to use the Signal protocol for end-to-end encryption.
 
 ![Connection Diagram](docs/images/connections.png)
 
-Heroku deploy work-in-progress:
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tokenbrowser/token-sofa-app)
+## See also
 
-## Developing a SOFA app for token
-
-### Bots
-
-### WebViews
-
-## Deploying
-
-### Deploy on Heroku
-
-### Deploy with Docker
-
+See [https://www.tokenbrowser.com]
