@@ -1,8 +1,8 @@
 # Creating A Token app
 
-TODO Nice animated gif
+This repository makes it easy to build and launch a new Token app in as little as 5 minutes :rocket:
 
-This repository makes it easy to build and launch a new Token app in as little as 5 minutes.
+TODO Nice animated gif
 
 It handles the complex logic of generating [SOFA](https://www.tokenbrowser.com/token-sofa-spec/) messages and encrypting them properly using the [Signal protocol](https://en.wikipedia.org/wiki/Signal_Protocol).
 
