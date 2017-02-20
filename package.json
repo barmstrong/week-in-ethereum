@@ -1,5 +1,16 @@
 {
+  "name": "token-sofa-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/bot.js",
+  "dependencies": {
+    "token-headless-bot": "file:framework/token-headless-bot"
+  },
+  "devDependencies": {},
   "scripts": {
-    "postinstall": "cd bot && npm install"
-  }
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "console": "nodemon -L node_modules/token-headless-bot/src/Console.js config.yml"
+  },
+  "author": "Token",
+  "license": "ISC"
 }
