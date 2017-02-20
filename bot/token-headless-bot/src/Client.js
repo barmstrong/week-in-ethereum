@@ -40,9 +40,10 @@ class Client {
       try {
         let wrapped = JSON.parse(message);
         if (wrapped.recipient == this.config.address) {
-          let session = new Session(this.bot, wrapped.sender);
-          let sofa = SOFA.parse(wrapped.sofa);
-          this.bot.onMessage(session, sofa);
+          let session = new Session(this.bot, wrapped.sender, () => {
+            let sofa = SOFA.parse(wrapped.sofa);
+            this.bot.onMessage(session, sofa);
+          });
         }
       } catch(e) {
         console.log("On Message Error: "+e);
@@ -56,8 +57,9 @@ class Client {
         if (message.jsonrpc == JSONRPC_VERSION) {
           let stored = this.rpcCalls[message.id];
           delete this.rpcCalls[message.id];
-          let session = new Session(this.bot, stored.sessionAddress);
-          stored.callback(session, message.error, message.result);
+          let session = new Session(this.bot, stored.sessionAddress, () => {
+            stored.callback(session, message.error, message.result);
+          });
         }
       } catch(e) {
         console.log("On RPC Message Error: "+e);

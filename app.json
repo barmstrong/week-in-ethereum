@@ -1,13 +1,13 @@
 {
   "name": "Token Sofa App",
-  "description": "Foundation for building a SOFA app for Token (Chat Bot / Web View) Edit",
+  "description": "Foundation for building a SOFA app for Token (Chat Bot / Web View)",
   "repository": "https://github.com/tokenbrowser/token-sofa-app",
   "env": {
-    "DISPLAY_NAME": {
+    "TOKEN_CLIENT_USERNAME": {
       "description": "Full display name for your app",
       "required": false
     },
-    "TOKEN_ADDRESS": {
+    "TOKEN_CLIENT_ADDRESS": {
       "description": "Ethereum address"
     },
     "TOKEN_CLIENT_SEED": {
@@ -27,6 +27,8 @@
   "addons": [
       {
         "plan": "heroku-redis:hobby-dev"
+      },{
+        "plan": "heroku-postgres:hobby-dev"
       }
   ],
   "buildpacks": [

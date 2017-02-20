@@ -3,3 +3,5 @@ store: store
 redis:
     envKey: REDIS_URL
     timeout: 2000
+postgres:
+  envKey: DATABASE_URL

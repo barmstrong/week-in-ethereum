@@ -7,9 +7,21 @@ class Config {
     let config = yaml.safeLoad(fs.readFileSync(path, 'utf8'));
     for(let k in config) this[k]=config[k];
 
+    if (this.postgres.url) { this.postgresUrl = this.postgres.url; }
+    if (this.postgres.envKey) { this.postgresUrl = process.env[this.postgres.envKey]; }
     if (this.redis.uri) { this.redisUrl = this.redis.uri; }
     if (this.redis.envKey) { this.redisUrl = process.env[this.redis.envKey]; }
     if (!this.address) { this.address = process.env['TOKEN_CLIENT_ADDRESS'] }
+  }
+
+  set postgresUrl(s) {
+    this.postgres = {url: s};
+    /*
+    let url = url.parse(s);
+    this.username = dbUri.getUserInfo().split(":")[0];
+    this.password = dbUri.getUserInfo().split(":")[1];
+    this.jdbcUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+    */
   }
 
   set redisUrl(s) {

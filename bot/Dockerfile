@@ -4,6 +4,7 @@ FROM node:latest
 RUN npm install -g nodemon
 
 ADD token-headless-bot /usr/src/token-headless-bot
+ADD token-headless-bot /tmp/token-headless-bot
 
 # use cached layer for node modules
 ADD package.json /tmp/package.json

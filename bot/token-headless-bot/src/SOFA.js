@@ -12,7 +12,7 @@ class SOFAObject {
     let ajv = new Ajv();
     this.validate = ajv.compile(schema);
     var valid = this.validate(content);
-    if (!valid) console.log(ajv.errorsText());
+    //if (!valid) console.log(ajv.errorsText());
   }
 
   get json() {
