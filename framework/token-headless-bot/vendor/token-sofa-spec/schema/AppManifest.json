@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "SOFA App Manifest",
+  "description": "Manifest used by browsers to decide how to present your SOFA app to the user.",
+  "properties": {
+    "displayName": {
+      "type": "string",
+      "title": "Display Name",
+      "description": "Human-readable app name"
+    },
+    "protocol": {
+      "type": "string",
+      "title": "Protocol",
+      "description": "Version of SOFA protocol in use by app"
+    },
+    "avatarUrl": {
+      "type": "string",
+      "title": "Avatar Url",
+      "description": "URL of image to be used as app icon/avatar"
+    },
+    "interfaces": {
+      "title": "Interfaces",
+      "description": "List of interfaces supported by this app",
+      "type": "array",
+      "enum": [
+        "ChatBot",
+        "WebApp"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "ownerAddress": {
+      "title": "Owner Address",
+      "description": "Ethereum address used for Token Chat Bot id",
+      "type": "string"
+    },
+    "paymentAddress": {
+      "title": "Payment Address",
+      "description": "Ethereum address used for eth transactions",
+      "type": "string"
+    },
+    "webApp": {
+      "title": "Web App",
+      "description": "URI for DApp/Token App web view ",
+      "type": "string"
+    },
+    "languages": {
+      "type": "array",
+      "title": "Languages",
+      "description": "List of ISO 639-1 codes for supported languages ",
+      "items": {
+        "type": "string"
+      }
+    },
+    "initRequest": {
+      "title": "Init Request",
+      "description": "A hint to a client that an Init message should be sent automatically when the app is opened",
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "enum": [
+            "paymentAddress",
+            "language"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "displayName",
+    "protocol",
+    "avatarUrl",
+    "interfaces",
+    "ownerAddress",
+    "paymentAddress",
+    "languages"
+  ]
+}

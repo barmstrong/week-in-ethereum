@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Payment",
+  "description": "Notification of an Ethereum payment",
+  "properties": {
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "description": "New status of Ethereum transaction",
+      "enum": ["confirmed", "unconfirmed", "error"]
+    },
+    "txHash": {
+      "type": "string",
+      "title": "Tx Hash",
+      "description": "Transaction hash"
+    },
+    "value": {
+      "type": "string",
+      "title": "Value",
+      "description": "Value of payment denominated in Wei and hex encoded"
+    }
+  },
+  "required": [
+    "status",
+    "txHash",
+    "value"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "PaymentRequest",
+  "description": "Request an Ethereum payment",
+  "properties": {
+    "body": {
+      "type": "string",
+      "title": "Body",
+      "description": "Text memo accompanying the request"
+    },
+    "value": {
+      "type": "string",
+      "title": "Value",
+      "description": "Value of payment denominated in Wei and hex encoded"
+    },
+    "destinationAddress": {
+      "type": "string",
+      "title": "Destination Address",
+      "description": "Ethereum address of recipient"
+    }
+  },
+  "required": [
+    "value",
+    "destinationAddress"
+  ]
+}
