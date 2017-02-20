@@ -18,4 +18,4 @@ See [https://www.tokenbrowser.com]
 
 
 Heroku deploy work-in-progress:
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tokenbrowser/token-sofa-app/tree/feature/heroku-experiments)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
