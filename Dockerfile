@@ -3,8 +3,8 @@ FROM node:latest
 
 RUN npm install -g nodemon
 
-ADD framework/token-headless-bot /usr/src/token-headless-bot
-ADD framework/token-headless-bot /tmp/framework/token-headless-bot
+ADD dependencies/token-headless-bot /usr/src/token-headless-bot
+ADD dependencies/token-headless-bot /tmp/dependencies/token-headless-bot
 
 # use cached layer for node modules
 ADD package.json /tmp/package.json

@@ -15,6 +15,10 @@ class SOFAObject {
     //if (!valid) console.log(ajv.errorsText());
   }
 
+  get type() {
+    return this.name;
+  }
+
   get json() {
     return JSON.stringify(this.content);
   }

@@ -28,6 +28,9 @@ class Bot {
   }
 
   onClientMessage(session, message) {
+    if (this.onEvent) {
+      this.onEvent(session, message);
+    }
     let heard = false;
     if (session.thread) {
       heard = session.thread.onClientMessage(session, message);

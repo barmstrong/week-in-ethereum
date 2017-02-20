@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/bot.js",
   "dependencies": {
-    "token-headless-bot": "file:framework/token-headless-bot"
+    "token-headless-bot": "file:dependencies/token-headless-bot"
   },
   "devDependencies": {},
   "scripts": {
