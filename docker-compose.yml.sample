@@ -1,7 +1,7 @@
 version: '2'
 services:
-  client:
-    build: framework/client
+  headless-client:
+    build: dependencies/headless-client
     links:
       - redis
       - postgres
@@ -12,7 +12,7 @@ services:
       - REDIS_URL=redis://h:rlcMWNrxXgqS0xM8aWCYuE0R@redis:6379
       - DATABASE_URL=postgres://token:va5uOdJBqu2dZ1@postgres:5432/token
     volumes:
-      - ./framework/config/config.yml:/usr/src/client/config.yml
+      - ./dependencies/config/config.yml:/usr/src/headless-client/config.yml
   bot:
     build: .
     links:
@@ -20,11 +20,11 @@ services:
       - postgres
     environment: *environment
     volumes:
-      - ./framework/config/config.yml:/usr/src/bot/config.yml
-      - ./framework/token-headless-bot/src:/usr/src/bot/node_modules/token-headless-bot/src
+      - ./dependencies/config/config.yml:/usr/src/bot/config.yml
+      - ./dependencies/token-headless-bot/src:/usr/src/bot/node_modules/token-headless-bot/src
       - ./src:/usr/src/bot/src
   redis:
-    build: framework/redis
+    build: dependencies/redis
     ports:
       - "6379:6379"
   postgres:
