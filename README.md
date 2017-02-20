@@ -15,3 +15,7 @@ The bot logic is contained in the [`bot/src/bot.js`](https://github.com/tokenbro
 ## See also
 
 See [https://www.tokenbrowser.com]
+
+
+Heroku deploy work-in-progress:
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tokenbrowser/token-sofa-app/tree/feature/heroku-experiments)

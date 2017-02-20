@@ -28,7 +28,7 @@
       {
         "plan": "heroku-redis:hobby-dev"
       },{
-        "plan": "heroku-postgres:hobby-dev"
+        "plan": "heroku-postgresql:hobby-dev"
       }
   ],
   "buildpacks": [
