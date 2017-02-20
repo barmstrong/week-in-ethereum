@@ -6,6 +6,13 @@ class Bot {
   constructor() {
     this.client = new Client(this);
     this.rootThread = new Thread(this);
+    for (let [name, schema] of Object.entries(SOFA.schemas)) {
+      let handlerName = "on" + name;
+      this[handlerName] = function(cb) {
+        let pattern = "SOFA::"+name+":";
+        this.rootThread.hear(pattern, null, cb);
+      };
+    }
     this.threads = {};
   }
 
@@ -20,13 +27,13 @@ class Bot {
     this.rootThread.hear(pattern, null, cb);
   }
 
-  onMessage(session, message) {
+  onClientMessage(session, message) {
     let heard = false;
     if (session.thread) {
-      heard = session.thread.onMessage(session, message);
+      heard = session.thread.onClientMessage(session, message);
     }
     if (!heard) {
-      heard = this.rootThread.onMessage(session, message);
+      heard = this.rootThread.onClientMessage(session, message);
     }
     return heard;
   }

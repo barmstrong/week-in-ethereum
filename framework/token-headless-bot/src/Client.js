@@ -1,4 +1,4 @@
-const redis = require('redis'); //npm install node_redis
+const redis = require('redis');
 const SOFA = require('./SOFA');
 const Config = require('./Config');
 const Session = require('./Session');
@@ -42,7 +42,7 @@ class Client {
         if (wrapped.recipient == this.config.address) {
           let session = new Session(this.bot, wrapped.sender, () => {
             let sofa = SOFA.parse(wrapped.sofa);
-            this.bot.onMessage(session, sofa);
+            this.bot.onClientMessage(session, sofa);
           });
         }
       } catch(e) {

@@ -30,7 +30,7 @@ class Thread {
     return this.states[name];
   }
 
-  onMessage(session, message) {
+  onClientMessage(session, message) {
     let match;
     for (let hearing of this.hearings) {
       let rx = new RegExp(hearing.pattern);
