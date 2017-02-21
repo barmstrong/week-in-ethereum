@@ -26,7 +26,7 @@ Then check out [`src/bot.js`](src/bot.js) to start changing the bot logic.
 
 ## Architecture
 
-When you deploy a Token app, your app consists of a few pieces.
+Deploy a Token app requires a few pieces:
 
 * **token-headless-client** - This is a client that we provide. It is similar to the iOS or Android client except it runs headless without any UI. It handles encrypting all messages using the Signal protocol and speaking to the Token backend services.
 * **bot.js** - This is where all your app logic lives. Your app most proxy all requests through the token-headless-client to ensure it communicates correctly with the Token backend services.
