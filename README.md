@@ -1,8 +1,26 @@
 # Token SOFA App
 
-This repository provides a sample app that you can fork and deploy in as little as 5 minutes.
+This repo helps you build and launch a [Token app](https://www.tokenbrowser.com) written in Javascript.
 
-See [this guide to creating a Token app](http://developers.tokenbrowser.com/docs/creating-a-token-app) to get started.
+We provide a [sample bot](https://github.com/tokenbrowser/token-app-js/tree/master/src) that can:
+
+* send messages
+* send and request money
+* create simple UI for buttons and menus
+* store sessions and state for each user
+
+TODO
+
+* sending image messages
+* creating web view UIs
+
+## Launch your own Token app in 5 minutes
+
+Read our [guide to creating a Token app](http://developers.tokenbrowser.com/docs/creating-a-token-app).
+
+When ready, fork this repo and deploy it to Heroku or run it locally with `docker-compose up`.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Architecture
 
@@ -15,7 +33,3 @@ The bot logic is contained in the [`bot/src/bot.js`](https://github.com/tokenbro
 ## See also
 
 See [https://www.tokenbrowser.com]
-
-
-Heroku deploy work-in-progress:
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
