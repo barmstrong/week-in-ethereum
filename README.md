@@ -37,7 +37,7 @@ Deploying a Token app requires a few processes to run:
 
 ![diagram](http://i.imgur.com/7aLwv0S.png)
 
-This sample bot also uses Postgres to store session and user data so that you can persist state for each user.
+The sample bot uses Postgres to store session data so that you can persist state for each user (similar to cookies in a web browser).
 
 ## See also
 
