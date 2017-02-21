@@ -1,6 +1,6 @@
 const readline = require('readline');
 const redis = require('redis');
-const SOFA = require('./SOFA');
+const SOFA = require('sofa-js');
 const Config = require('./Config');
 const Writable = require('stream').Writable;
 

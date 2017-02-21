@@ -1,15 +1,21 @@
 {
-  "name": "token-sofa-app",
-  "version": "1.0.0",
+  "name": "token-app-js",
+  "version": "0.1.0",
   "description": "",
   "main": "src/bot.js",
   "dependencies": {
-    "token-headless-bot": "file:dependencies/token-headless-bot"
+    "sofa-js": "sofaprotocol/sofa-js",
+    "glob": "^7.1.1",
+    "js-yaml": "^3.7.0",
+    "mkdirp": "^0.5.1",
+    "pg": "^6.1.2",
+    "redis": "^2.6.5",
+    "sleep": "^5.1.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "console": "nodemon -L node_modules/token-headless-bot/src/Console.js config.yml"
+    "console": "nodemon -L src/lib/Console.js config.yml"
   },
   "author": "Token",
   "license": "ISC"

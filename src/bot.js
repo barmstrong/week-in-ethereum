@@ -1,5 +1,5 @@
-const SOFA = require('token-headless-bot').SOFA;
-const Bot = require('token-headless-bot').Bot;
+const SOFA = require('sofa-js');
+const Bot = require('./lib/Bot');
 
 let bot = new Bot();
 

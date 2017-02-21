@@ -17,7 +17,7 @@ class Session {
       host: params.hostname,
       port: params.port,
       database: params.pathname.split('/')[1],
-      max: 10, // max number of clients in the pool
+      max: 10,
       idleTimeoutMillis: 30000
     };
     this.pgPool = new pg.Pool(pgConfig);

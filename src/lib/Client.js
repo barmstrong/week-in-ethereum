@@ -1,5 +1,5 @@
 const redis = require('redis');
-const SOFA = require('./SOFA');
+const SOFA = require('sofa-js');
 const Config = require('./Config');
 const Session = require('./Session');
 

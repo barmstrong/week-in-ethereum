@@ -1,6 +1,6 @@
 const Client = require('./Client');
 const Thread = require('./Thread');
-const SOFA = require('./SOFA');
+const SOFA = require('sofa-js');
 
 class Bot {
   constructor() {
