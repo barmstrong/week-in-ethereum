@@ -17,6 +17,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "console": "nodemon -L src/lib/Console.js config.yml"
   },
+  "engines": {
+    "node": "7.4.0"
+  },
   "author": "Token",
   "license": "ISC"
 }
