@@ -1,8 +1,8 @@
 # Token SOFA App
 
-This repo helps you build a [Token app](https://www.tokenbrowser.com) with Javascript.
+This repo helps you build a [Token app](https://www.tokenbrowser.com) in Javascript.
 
-We provide a [sample bot](https://github.com/tokenbrowser/token-app-js/tree/master/src) that can:
+The [sample bot](https://github.com/tokenbrowser/token-app-js/tree/master/src) can:
 
 * send messages
 * send and request money
@@ -22,14 +22,20 @@ When ready, fork this repo and deploy it to Heroku or run it locally with `docke
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Then check out [`bot.js`](src/bot.js) to start changing the bot logic.
+Then check out [`src/bot.js`](src/bot.js) to start changing the bot logic.
 
 ## Architecture
 
+When you deploy a Token app, your app consists of a few pieces.
 
+* **token-headless-client** - This is a client that we provide. It is similar to the iOS or Android client except it runs headless without any UI. It handles encrypting all messages using the Signal protocol and speaking to the Token backend services.
+* **bot.js** - This is where all your app logic lives. Your app most proxy all requests through the token-headless-client to ensure it communicates correctly with the Token backend services.
+* **redis** - Redis pub/sub is used to help your bot and the token-headless-client communicate.
 
-This bot has a Redis backend for storage. It converts your standard messages into SOFA messages, and then encrypts them to use the Signal protocol for end-to-end encryption.
+![diagram](http://i.imgur.com/7aLwv0S.png)
+
+This sample bot also uses Postgres to store session and user data so that you can persist state for each user.
 
 ## See also
 
-See [https://www.tokenbrowser.com]
+* [https://www.tokenbrowser.com]
