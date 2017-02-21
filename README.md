@@ -26,12 +26,12 @@ Then check out [`src/bot.js`](src/bot.js) to start changing the bot logic.
 
 ## Architecture
 
-Deploying a Token app requires a few pieces:
+Deploying a Token app requires a few processes to run:
 
 * **token-headless-client**<br>
-  This is a client we provide (similar to the iOS or Android client) that provides a wrapper around the Token backend services, and handles end-to-end encrypting all messages using the Signal protocol. It is written in Java.
+  This is a client we provide (similar to the iOS or Android client) that is written in Java and provides a wrapper around the Token backend services It also handles end-to-end encrypting all messages using the Signal protocol.
 * **redis**<br>
-  We use redis pub/sub to provide a connection between the token-headless-client and your bot. All requests to and from your bot are proxied through the token-headless-client process they can reach the Token backend.
+  We use redis pub/sub to provide a connection between the token-headless-client and your bot. All requests to and from your bot must be proxied through the token-headless-client process to correctly communicate with the Token backend.
 * **bot.js**<br>
   This is where all your app logic lives.
 
