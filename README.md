@@ -2,7 +2,7 @@
 
 This repo helps you build a [Token app](https://www.tokenbrowser.com) in Javascript.
 
-The [sample bot](src/bot.js) can:
+The sample bot can:
 
 * send messages
 * send and request money
