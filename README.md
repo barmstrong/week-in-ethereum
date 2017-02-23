@@ -48,10 +48,10 @@ Deploying a Token app requires a few processes to run:
   We use redis pub/sub to provide a connection between the token-headless-client and your bot.
 * **bot.js**<br>
   This is where all your app logic lives.
+* **postgres**<br>
+  Postgres is used to store session data so you can persist state for each user who talks to your bot (similar to cookies in a web browser).
 
 ![diagram](http://i.imgur.com/7aLwv0S.png)
-
-The sample bot uses Postgres to store session data so that you can persist state for each user (similar to cookies in a web browser).
 
 ## See also
 
