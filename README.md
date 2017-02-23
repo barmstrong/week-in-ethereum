@@ -18,11 +18,25 @@ TODO
 
 Read our [guide to creating a Token app](http://developers.tokenbrowser.com/docs/creating-a-token-app).
 
-When ready, fork this repo and deploy it to Heroku or run it locally with `docker-compose up`.
+When ready, fork this repo and deploy it to Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 Then check out [`src/bot.js`](src/bot.js) to start changing the bot logic.
+
+## Running locally with Docker
+
+You can run the project locally with
+
+```
+docker-compose up
+```
+
+If any new depencies are added you can rebuild the project with
+
+```
+docker-compose build bot
+```
 
 ## Architecture
 
