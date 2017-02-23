@@ -35,7 +35,13 @@ docker-compose up
 If any new depencies are added you can rebuild the project with
 
 ```
-docker-compose build bot
+docker-compose build
+```
+
+To reset the postgres database in your dev environment you can use
+
+```
+docker-compose down -v
 ```
 
 ## Architecture
