@@ -2,6 +2,7 @@ const redis = require('redis');
 const SOFA = require('sofa-js');
 const Config = require('./Config');
 const Session = require('./Session');
+const Logger = require('./Logger');
 
 const JSONRPC_VERSION = '2.0';
 const JSONRPC_REQUEST_CHANNEL = '_rpc_request';
@@ -42,6 +43,7 @@ class Client {
         if (wrapped.recipient == this.config.address) {
           let session = new Session(this.bot, wrapped.sender, () => {
             let sofa = SOFA.parse(wrapped.sofa);
+            Logger.receivedMessage(sofa);
             this.bot.onClientMessage(session, sofa);
           });
         }
@@ -72,6 +74,7 @@ class Client {
     if (typeof message === "string") {
       message = SOFA.Message({body: message})
     }
+    Logger.sentMessage(message);
     this.publisher.publish(this.config.address, JSON.stringify({
       sofa: message.string,
       sender: this.config.address,

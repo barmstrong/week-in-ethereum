@@ -16,7 +16,30 @@ bot.onEvent = function(session, message) {
 
 function onMessage(session, message) {
   if (message.content.body.includes("red")) {
-    session.reply("I love that color!");
+    session.reply(SOFA.Message({
+      body: "What would you like me to do for you right now?",
+      controls: [
+        {
+          type: "group",
+          label: "Trip",
+          controls: [
+            {type: "button", label: "Directions", action: "Webview:/Directions"},
+            {type: "button", label: "Timetable", value: "timetable"},
+            {type: "button", label: "Exit Info", value: "exit"},
+            {type: "button", label: "Service Conditions", action: "Webview:/ServiceConditions"}
+          ]
+        },{
+          type: "group",
+          label: "Services",
+          controls: [
+            {type: "button", label: "Buy Ticket", action: "buy-ticket"},
+            {type: "button", label: "Support", value: "support"}
+          ]
+        },
+        {type: "button", label: "Nothing", value: -1}
+      ],
+      showKeyboard: false
+    }));
   } else {
     sendColorPrompt(session, "I only want to talk about my favorite color. Guess what it is!");
   }
