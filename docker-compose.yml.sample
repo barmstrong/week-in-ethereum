@@ -12,7 +12,7 @@ services:
       - REDIS_URL=redis://h:rlcMWNrxXgqS0xM8aWCYuE0R@redis:6379
       - DATABASE_URL=postgres://token:va5uOdJBqu2dZ1@postgres:5432/token
     volumes:
-      - ./config/config.yml:/usr/src/headless-client/config.yml
+      - ./config/docker.yml:/usr/src/headless-client/config.yml
   bot:
     build: .
     links:
@@ -20,7 +20,7 @@ services:
       - postgres
     environment: *environment
     volumes:
-      - ./config/config.yml:/usr/src/bot/config.yml
+      - ./config/docker.yml:/usr/src/bot/config.yml
       - ./src:/usr/src/bot/src
   redis:
     build: dependencies/redis
