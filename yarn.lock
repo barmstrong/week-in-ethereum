@@ -246,9 +246,9 @@ sleep@^5.1.0:
   dependencies:
     nan ">=2.0.0"
 
-sofa-js@sofaprotocol/sofa-js#6382ecf:
+sofa-js@sofaprotocol/sofa-js#238dc8e:
   version "0.1.0"
-  resolved "https://codeload.github.com/sofaprotocol/sofa-js/tar.gz/6382ecf"
+  resolved "https://codeload.github.com/sofaprotocol/sofa-js/tar.gz/238dc8e"
   dependencies:
     ajv "^4.11.3"
     glob "^7.1.1"

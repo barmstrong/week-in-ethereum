@@ -11,7 +11,7 @@
     "pg": "^6.1.2",
     "redis": "^2.6.5",
     "sleep": "^5.1.0",
-    "sofa-js": "sofaprotocol/sofa-js#6382ecf",
+    "sofa-js": "sofaprotocol/sofa-js#238dc8e",
     "word-wrap": "^1.2.1"
   },
   "devDependencies": {},
