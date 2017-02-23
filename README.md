@@ -51,7 +51,7 @@ Deploying a Token app requires a few processes to run:
 * **postgres**<br>
   Postgres is used to store session data so you can persist state for each user who talks to your bot (similar to cookies in a web browser).
 
-![diagram](http://i.imgur.com/7aLwv0S.png)
+![diagram](docs/images/app-architecture.png)
 
 ## See also
 
