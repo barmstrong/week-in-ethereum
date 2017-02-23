@@ -3,15 +3,15 @@
   "description": "Foundation for building a SOFA app for Token (Chat Bot / Web View)",
   "repository": "https://github.com/tokenbrowser/token-sofa-app",
   "env": {
-    "TOKEN_CLIENT_USERNAME": {
-      "description": "Full display name for your app",
+    "TOKEN_APP_USERNAME": {
+      "description": "Choose a username for your app, no spaces",
       "required": false
     },
-    "TOKEN_CLIENT_ADDRESS": {
-      "description": "Ethereum address"
+    "TOKEN_APP_ID": {
+      "description": "Ethereum address that identifies your app"
     },
-    "TOKEN_CLIENT_SEED": {
-      "description": "12 word backup phrase"
+    "TOKEN_APP_SEED": {
+      "description": "12 word secret backup phrase"
     }
   },
   "formation": {

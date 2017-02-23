@@ -11,7 +11,7 @@ class Config {
     if (this.postgres.envKey) { this.postgresUrl = process.env[this.postgres.envKey]; }
     if (this.redis.uri) { this.redisUrl = this.redis.uri; }
     if (this.redis.envKey) { this.redisUrl = process.env[this.redis.envKey]; }
-    if (!this.address) { this.address = process.env['TOKEN_CLIENT_ADDRESS'] }
+    if (!this.address) { this.address = process.env['TOKEN_APP_ID'] }
   }
 
   set postgresUrl(s) {
