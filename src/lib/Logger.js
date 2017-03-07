@@ -2,6 +2,11 @@ const wrap = require('word-wrap');
 const chalk = require('chalk');
 chalk.enabled = true;
 
+function mapLines(s, f) {
+  if (s == null) { s = "null" }
+  return s.split('\n').map(f)
+}
+
 class Logger {
 
   static sentMessage(sofa) {
@@ -17,12 +22,12 @@ class Logger {
   }
 
   static color(prefix, message, color) {
-    let lines = message.split('\n').map((x) => { return color(prefix + x) });
+    let lines = mapLines(message, (x) => { return color(prefix + x) });
     return lines.join('\n');
   }
 
   static colorPrefix(prefix, message, color, color2) {
-    let lines = message.split('\n').map((x) => { return color(prefix) + color2(x) });
+    let lines = mapLines(message, (x) => { return color(prefix) + color2(x) });
     return lines.join('\n');
   }
 
