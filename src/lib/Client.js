@@ -44,7 +44,29 @@ class Client {
           let session = new Session(this.bot, wrapped.sender, () => {
             let sofa = SOFA.parse(wrapped.sofa);
             Logger.receivedMessage(sofa);
-            this.bot.onClientMessage(session, sofa);
+
+            if (sofa.type == "Init") {
+              for(let k in sofa.content) {
+                session.set(k, sofa.content[k]);
+              }
+              let held = session.get('heldForInit')
+              if (held) {
+                session.set('heldForInit', null)
+                let heldSofa = SOFA.parse(held);
+                this.bot.onClientMessage(session, heldSofa);
+              }
+            } else {
+              if (!session.get('paymentAddress')) {
+                console.log('User has not sent Init message, sending InitRequest')
+                session.set('heldForInit', wrapped.sofa)
+                session.reply(SOFA.InitRequest({
+                  values: ['paymentAddress', 'language']
+                }));
+              } else {
+                this.bot.onClientMessage(session, sofa);
+              }
+            }
+
           });
         }
       } catch(e) {
