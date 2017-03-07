@@ -1,5 +1,6 @@
 const SOFA = require('sofa-js');
 const Bot = require('./lib/Bot');
+const unit = require('ethjs-unit');
 
 let bot = new Bot();
 
@@ -10,6 +11,9 @@ bot.onEvent = function(session, message) {
       break;
     case "Command":
       onCommand(session, message);
+      break;
+    case "PaymentRequest":
+      onPaymentRequest(session, message);
       break;
   }
 }
@@ -63,4 +67,16 @@ function sendColorPrompt(session, body) {
     ],
     showKeyboard: false
   }));
+}
+
+function onPaymentRequest(session, message) {
+  let limit = unit.toWei(5, 'ether');
+  if (message.value.lt(limit)) {
+    session.sendEth(message.value, (session, error, result) => {
+      if (error) { session.reply('I tried but there was an error') }
+      if (result) { session.reply('Here you go!') }
+    })
+  } else {
+    session.reply('Sorry, I have a 5 ETH limit.')
+  }
 }
