@@ -82,8 +82,17 @@ class Session {
     this.bot.client.send(this, message);
   }
 
-  rpc(rpcCall, callback) {
-    this.bot.client.rpc(this, rpcCall, callback);
+  sendEth(value, callback) {
+    value = '0x'+value.toString(16)
+    this.bot.client.rpc(this, {
+      method: "sendTransaction",
+      params: {
+        to: this.get('paymentAddress'),
+        value: value
+      }
+    }, (session, error, result) => {
+      if (callback) { callback(session, error, result); }
+    });
   }
 
   load(onReady) {
