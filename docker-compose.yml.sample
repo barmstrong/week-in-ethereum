@@ -8,11 +8,13 @@ services:
     environment: &environment
       - TOKEN_APP_USERNAME=
       - TOKEN_APP_ID=
+      - TOKEN_APP_PAYMENT_ADDRESS=
       - TOKEN_APP_SEED=
       - REDIS_URL=redis://h:rlcMWNrxXgqS0xM8aWCYuE0R@redis:6379
       - DATABASE_URL=postgres://token:va5uOdJBqu2dZ1@postgres:5432/token
     volumes:
       - ./config/docker.yml:/usr/src/headless-client/config.yml
+      - ./attachments:/usr/src/headless-client/attachments
   bot:
     build: .
     links:
@@ -25,11 +27,11 @@ services:
   redis:
     build: dependencies/redis
     ports:
-      - "6379:6379"
+      - 6379
   postgres:
     image: postgres:9.6
     ports:
-      - "15432:5432"
+      - 15432
     environment:
       - POSTGRES_PASSWORD=va5uOdJBqu2dZ1
       - POSTGRES_USER=token

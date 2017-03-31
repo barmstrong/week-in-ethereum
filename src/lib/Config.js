@@ -12,6 +12,7 @@ class Config {
     if (this.redis.uri) { this.redisUrl = this.redis.uri; }
     if (this.redis.envKey) { this.redisUrl = process.env[this.redis.envKey]; }
     if (!this.address) { this.address = process.env['TOKEN_APP_ID'] }
+    if (!this.paymentAddress) { this.paymentAddress = process.env['TOKEN_APP_PAYMENT_ADDRESS'] }
   }
 
   set postgresUrl(s) {
