@@ -92,7 +92,7 @@ class Client {
     this.rpcSubscriber.subscribe(this.config.address+JSONRPC_RESPONSE_CHANNEL);
   }
 
-  send(session, message) {
+  send(address, message) {
     if (typeof message === "string") {
       message = SOFA.Message({body: message})
     }
@@ -100,7 +100,7 @@ class Client {
     this.publisher.publish(this.config.address, JSON.stringify({
       sofa: message.string,
       sender: this.config.address,
-      recipient: session.address
+      recipient: address
     }));
   }
 

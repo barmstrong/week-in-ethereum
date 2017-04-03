@@ -42,6 +42,9 @@ class Session {
   }
 
   get(key) {
+    if (key === 'tokenId') {
+      return this.address;
+    }
     return this.data[key];
   }
 
@@ -81,11 +84,11 @@ class Session {
   }
 
   reply(message) {
-    this.bot.client.send(this, message);
+    this.bot.client.send(this.address, message);
   }
 
   sendEth(value, callback) {
-    value = '0x'+value.toString(16)
+    value = '0x' + unit.toWei(value, 'ether').toString(16)
     this.bot.client.rpc(this, {
       method: "sendTransaction",
       params: {
