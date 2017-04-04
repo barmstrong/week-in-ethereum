@@ -2,7 +2,8 @@ const Config = require('./Config');
 const FeedParser = require('feedparser');
 const request = require('request');
 const redis = require('redis');
-const constants = require('../constats');
+const constants = require('./constants');
+const SOFA = require('sofa-js');
 
 const config = new Config(process.argv[2]);
 const redisClient = redis.createClient({
@@ -30,6 +31,7 @@ class FeedPoller {
 
   broadcast() {
     // Broadcast to all users the latest article
+    console.log('BROADCAST')
     let article = this.articles[0];
     let self = this;
 
@@ -46,7 +48,13 @@ class FeedPoller {
       users.forEach(function(user) {
         if (user.subscribed && user.lastUpdate !== article.link) {
           let message = `Hey! The latest issue of ${constants.NAME} is out: ${article.link}`;
-          self.bot.client.send(user.userId, message);
+
+          self.bot.client.send(user.userId, SOFA.Message({
+            body: message,
+            controls: [constants.CONTROLS.tip, constants.CONTROLS.unsubscribe],
+            showKeyboard: false,
+          }));
+
           user.lastUpdate = article.link;
           newUsers.push({
             userId: user.userId,

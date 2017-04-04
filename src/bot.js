@@ -1,37 +1,10 @@
 const Bot = require('./lib/Bot');
 const FeedPoller = require('./lib/FeedPoller');
 const SOFA = require('sofa-js');
+const constants = require('./lib/constants');
 
 let bot = new Bot();
 let poller = new FeedPoller(bot);
-
-// CONSTANTS
-const NAME = 'Week in Ethereum News';
-
-const CONTROLS = {
-  subscribe: {
-    type: 'button',
-    label: 'Subscribe to the newsletter 📩',
-    value: 'subscribe'
-  },
-  unsubscribe: {
-    type: 'button',
-    label: 'Unsubscribe 👋',
-    value: 'unsubscribe'
-  },
-  tip: {
-    type: 'button',
-    label: 'Tip 💸',
-    value: 'tip'
-  }
-};
-
-const AMOUNTS = {
-  amount1: 0.01,
-  amount2: 0.1,
-  amount3: 0.5,
-  amount4: 1.0,
-}
 
 // ROUTING
 bot.onEvent = function(session, message) {
@@ -63,8 +36,8 @@ function onMessage(session, message) {
 function onCommand(session, command) {
   switch (command.content.value) {
     case 'tip':
-      tip(session)
-      break
+      tip(session);
+      break;
     case 'amount1':
     case 'amount2':
     case 'amount3':
@@ -73,6 +46,9 @@ function onCommand(session, command) {
       break;
     case 'subscribe':
       subscribe(session)
+      break
+    case 'cancel':
+      latest(session)
       break
     case 'unsubscribe':
       unsubscribe(session)
@@ -83,41 +59,39 @@ function onCommand(session, command) {
 // STATES
 
 function onPayment(session) {
-  let message = `Thank you for supporting '${NAME}' 🙏`;
+  let message = `Thank you for supporting '${constants.NAME}' 🙏`;
   sendMessage(session, message);
 };
 
 function welcome(session) {
-  let message = `Hi! Welcome to '${NAME}'. We keep you up to date with what's happening in the Ethereum community. Tap 'Subscribe' to get started.`;
+  let message = `Hi! Welcome to '${constants.NAME}'. We keep you up to date with what's happening in the Ethereum community. Tap 'Subscribe' to get started.`;
   sendMessage(session, message);
 };
 
 function latest(session) {
   // Default response for subscribed users
   let article = poller.getLatestArticle();
-  let message = `Hey! Check out the latest issue of '${NAME}': ${article.link}`;
+  let message = `Hey! Check out the latest issue of '${constants.NAME}': ${article.link}`;
   sendMessage(session, message);
 };
 
 function tip(session) {
   let controls = [];
-  for (let key in AMOUNTS) {
-    let val = AMOUNTS[key];
+  for (let key in constants.AMOUNTS) {
+    let val = constants.AMOUNTS[key];
     controls.push({type: 'button', label: `${val} ETH`, value: key})
   }
-  controls.push({type: 'button', label: `Cancel`, value: 'subscribe'})
+  controls.push({type: 'button', label: `Cancel`, value: 'cancel'})
 
   session.reply(SOFA.Message({
     body: "Choose an amount:",
-    controls: [
-      {type: 'button',label: '',value: 'subscribe'}
-    ],
+    controls: controls,
     showKeyboard: false,
   }));
 };
 
 function amount(session, command) {
-  session.requestEth(AMOUNTS['amount'], `Tip to '${NAME}'`)
+  session.requestEth(constants.AMOUNTS[command], `Tip to '${constants.NAME}'`)
 };
 
 function subscribe(session) {
@@ -141,11 +115,11 @@ function sendMessage(session, message) {
   let controls = [];
   if (session.get('subscribed')) {
     controls = [
-      CONTROLS.tip,
-      CONTROLS.unsubscribe
+      constants.CONTROLS.tip,
+      constants.CONTROLS.unsubscribe
     ];
   } else {
-    controls = [CONTROLS.subscribe];
+    controls = [constants.CONTROLS.subscribe];
   }
   session.reply(SOFA.Message({
     body: message,
