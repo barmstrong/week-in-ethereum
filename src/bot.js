@@ -1,24 +1,9 @@
 const Bot = require('./lib/Bot');
 const FeedPoller = require('./lib/FeedPoller');
 const SOFA = require('sofa-js');
-/*
 
-// Add new users
-let users;
-redisClient.get('users', function(err, value) {
-  if (err) throw(err);
-  if (value) {
-    users = JSON.parse(value);
-  } else {
-    users = [];
-  }
-});
-
-redisClient.set('users', JSON.stringify(users));
-*/
 let bot = new Bot();
-let poller = new FeedPoller();
-// poller.start(bot);
+let poller = new FeedPoller(bot);
 const NAME = 'Week in Ethereum News';
 
 const CONTROLS = {
@@ -38,8 +23,6 @@ const CONTROLS = {
     value: 'tip'
   }
 };
-
-// bot.client.send('0x0fc0c7288bdc48b7ab86bb1ecc072de3da54eb3c', 'Hi')
 
 bot.onEvent = function(session, message) {
   console.log(message.type)
@@ -105,6 +88,7 @@ function tip(session) {
 
 function subscribe(session) {
   session.set('subscribed', true)
+  poller.addUser(session);
   let article = poller.getLatestArticle();
   let message = `Thank you for subscribing 🙌. This is a weekly newsletter, so you will receive your next update within a week. For now, check out the latest issue: ${article.link}`;
   sendMessage(session, message);
@@ -112,6 +96,7 @@ function subscribe(session) {
 
 function unsubscribe(session) {
   session.set('subscribed', false);
+  poller.removeUser(session);
   let message = '😭 sorry to see you go. We hope you come back!'
   sendMessage(session, message);
 };

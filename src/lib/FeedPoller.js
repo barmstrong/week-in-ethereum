@@ -2,14 +2,15 @@ const Config = require('./Config');
 const FeedParser = require('feedparser');
 const request = require('request');
 const redis = require('redis');
-/*
+const constants = require('../constats');
+
 const config = new Config(process.argv[2]);
 const redisClient = redis.createClient({
   host: config.redis.host,
   port: config.redis.port,
   password: config.redis.password
 });
-*/
+
 class FeedPoller {
   constructor(bot) {
     this.url = 'http://www.weekinethereum.com/rss';
@@ -24,17 +25,81 @@ class FeedPoller {
     this.timer = setInterval(() => {
       this.getArticles();
       this.broadcast();
-    }, 60 * 1000);
+    }, 10 * 1000);
   }
 
   broadcast() {
     // Broadcast to all users the latest article
-    //  this.users();
-  }
+    let article = this.articles[0];
+    let self = this;
 
-  users() {
-    //redisClient
-  }
+    redisClient.get('users', function(err, value) {
+      if (err) throw(err);
+
+      let users = [];
+      let newUsers = []
+      if (value) {
+        users = JSON.parse(value);
+      }
+
+      console.log(users);
+      users.forEach(function(user) {
+        if (user.subscribed && user.lastUpdate !== article.link) {
+          let message = `Hey! The latest issue of ${constants.NAME} is out: ${article.link}`;
+          self.bot.client.send(user.userId, message);
+          user.lastUpdate = article.link;
+          newUsers.push({
+            userId: user.userId,
+            lastUpdate: article.link,
+            subscribed: user.subscribed,
+          });
+        } else {
+          newUsers.push(user);
+        }
+      });
+      redisClient.set('users', JSON.stringify(newUsers));
+    });
+  };
+
+  addUser(session) {
+    console.log('ADD NEW USER')
+    let article = this.articles[0];
+    redisClient.get('users', function(err, value) {
+      if (err) throw(err);
+
+      let users = [];
+      if (value) {
+        users = JSON.parse(value);
+      }
+      users.push({
+        userId: session.get('tokenId'),
+        lastUpdate: article.link,
+        subscribed: true,
+      });
+      console.log(users);
+      redisClient.set('users', JSON.stringify(users));
+    });
+  };
+
+  removeUser(session) {
+    console.log('REMOVE USER')
+    redisClient.get('users', function(err, value) {
+      if (err) throw(err);
+
+      let users = [];
+      let newUsers = []
+      if (value) {
+        users = JSON.parse(value);
+      }
+      users.forEach(function(user) {
+        if (user.userId !== session['tokenId']) {
+          newUsers.push(user);
+        }
+      });
+      console.log(newUsers);
+      redisClient.set('users', JSON.stringify(newUsers));
+    });
+  };
 
   getArticles() {
     // Populate this.articles with all articles available
