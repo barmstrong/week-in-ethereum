@@ -4,3 +4,5 @@ node_modules
 docker-compose.yml
 .gradle
 .idea
+*.swo
+*.swp
