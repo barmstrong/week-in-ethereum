@@ -19,6 +19,9 @@ redisClient.set('users', JSON.stringify(users));
 let bot = new Bot();
 let poller = new FeedPoller();
 // poller.start(bot);
+
+// CONSTANTS
+
 const NAME = 'Week in Ethereum News';
 
 const CONTROLS = {
@@ -39,7 +42,14 @@ const CONTROLS = {
   }
 };
 
-// bot.client.send('0x0fc0c7288bdc48b7ab86bb1ecc072de3da54eb3c', 'Hi')
+const AMOUNTS = {
+  amount1: 0.01,
+  amount2: 0.1,
+  amount3: 0.5,
+  amount4: 1.0,
+}
+
+// ROUTING
 
 bot.onEvent = function(session, message) {
   console.log(message.type)
@@ -72,6 +82,12 @@ function onCommand(session, command) {
     case 'tip':
       tip(session)
       break
+    case 'amount1':
+    case 'amount2':
+    case 'amount3':
+    case 'amount4':
+      amount(session, command.content.value);
+      break;
     case 'subscribe':
       subscribe(session)
       break
@@ -80,6 +96,8 @@ function onCommand(session, command) {
       break
     }
 };
+
+// STATES
 
 function onPayment(session) {
   let message = `Thank you for supporting '${NAME}' 🙏`;
@@ -99,8 +117,24 @@ function latest(session) {
 };
 
 function tip(session) {
-  // TODO: allow donating a custom amount
-  session.requestEth(0.1, `Tip to '${NAME}'`)
+  let controls = [];
+  for (let key in AMOUNTS) {
+    let val = AMOUNTS[key];
+    controls.push({type: 'button', label: `${val} ETH`, value: key})
+  }
+  controls.push({type: 'button', label: `Cancel`, value: 'subscribe'})
+
+  session.reply(SOFA.Message({
+    body: "Choose an amount:",
+    controls: [
+      {type: 'button',label: '',value: 'subscribe'}
+    ],
+    showKeyboard: false,
+  }));
+};
+
+function amount(session, command) {
+  session.requestEth(AMOUNTS['amount'], `Tip to '${NAME}'`)
 };
 
 function subscribe(session) {
@@ -115,6 +149,8 @@ function unsubscribe(session) {
   let message = '😭 sorry to see you go. We hope you come back!'
   sendMessage(session, message);
 };
+
+// HELPERS
 
 function sendMessage(session, message) {
   let controls = [];
