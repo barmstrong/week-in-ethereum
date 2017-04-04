@@ -13,7 +13,6 @@
     "redis": "^2.6.5",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
-    "sleep": "^5.1.0",
     "sofa-js": "sofaprotocol/sofa-js#34c6aa7",
     "word-wrap": "^1.2.1"
   },
