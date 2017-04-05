@@ -8,18 +8,17 @@ let poller = new FeedPoller(bot);
 
 // ROUTING
 bot.onEvent = function(session, message) {
-  console.log(message.type)
   switch (message.type) {
-    case "Init":
+    case 'Init':
       welcome(session);
       break;
-    case "Message":
+    case 'Message':
       onMessage(session, message);
       break;
-    case "Command":
+      case 'Command':
       onCommand(session, message);
       break;
-    case "Payment":
+    case 'Payment':
       onPayment(session);
       break;
   }
@@ -51,6 +50,7 @@ function onCommand(session, command) {
       subscribe(session)
       break
     case 'cancel':
+    case 'latest':
       latest(session)
       break
     case 'unsubscribe':
@@ -118,6 +118,7 @@ function sendMessage(session, message) {
   let controls = [];
   if (session.get('subscribed')) {
     controls = [
+      constants.CONTROLS.latest,
       constants.CONTROLS.tip,
       constants.CONTROLS.latest,
       constants.CONTROLS.unsubscribe
