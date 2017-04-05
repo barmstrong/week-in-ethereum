@@ -26,7 +26,7 @@ class FeedPoller {
     this.timer = setInterval(() => {
       this.getArticles();
       this.broadcast();
-    }, 10 * 1000);
+    }, 60 * 2 * 1000);
   }
 
   broadcast() {
@@ -43,7 +43,6 @@ class FeedPoller {
         users = JSON.parse(value);
       }
 
-      console.log(users);
       users.forEach(function(user) {
         if (user.subscribed && user.lastUpdate !== article.link) {
           let message = `Hey! The latest issue of ${constants.NAME} is out: ${article.link}`;
@@ -82,7 +81,6 @@ class FeedPoller {
         lastUpdate: article.link,
         subscribed: true,
       });
-      console.log(users);
       redisClient.set('users', JSON.stringify(users));
     });
   };
