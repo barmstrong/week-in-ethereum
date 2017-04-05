@@ -15,6 +15,11 @@ const constants = {
       type: 'button',
       label: 'Tip 💸',
       value: 'tip'
+    },
+    latest: {
+      type: 'button',
+      label: 'Latest issue ✉️',
+      value: 'latest'
     }
   },
 

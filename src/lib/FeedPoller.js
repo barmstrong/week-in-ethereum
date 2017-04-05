@@ -31,7 +31,6 @@ class FeedPoller {
 
   broadcast() {
     // Broadcast to all users the latest article
-    console.log('BROADCAST')
     let article = this.articles[0];
     let self = this;
 
@@ -70,7 +69,6 @@ class FeedPoller {
   };
 
   addUser(session) {
-    console.log('ADD NEW USER')
     let article = this.articles[0];
     redisClient.get('users', function(err, value) {
       if (err) throw(err);
@@ -90,7 +88,6 @@ class FeedPoller {
   };
 
   removeUser(session) {
-    console.log('REMOVE USER')
     redisClient.get('users', function(err, value) {
       if (err) throw(err);
 
@@ -104,7 +101,6 @@ class FeedPoller {
           newUsers.push(user);
         }
       });
-      console.log(newUsers);
       redisClient.set('users', JSON.stringify(newUsers));
     });
   };
