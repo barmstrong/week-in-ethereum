@@ -118,7 +118,6 @@ function sendMessage(session, message) {
   let controls = [];
   if (session.get('subscribed')) {
     controls = [
-      constants.CONTROLS.latest,
       constants.CONTROLS.tip,
       constants.CONTROLS.latest,
       constants.CONTROLS.unsubscribe
