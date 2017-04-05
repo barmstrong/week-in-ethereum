@@ -1,9 +1,14 @@
 const constants = {
   NAME: 'Week in Ethereum News',
   CONTROLS: {
+    latest: {
+      type: 'button',
+      label: 'Latest 📨',
+      value: 'latest'
+    },
     subscribe: {
       type: 'button',
-      label: 'Subscribe to the newsletter 📩',
+      label: 'Subscribe 📩',
       value: 'subscribe'
     },
     unsubscribe: {

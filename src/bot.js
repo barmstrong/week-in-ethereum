@@ -35,6 +35,9 @@ function onMessage(session, message) {
 
 function onCommand(session, command) {
   switch (command.content.value) {
+    case 'latest':
+      latest(session);
+      break;
     case 'tip':
       tip(session);
       break;
@@ -71,7 +74,7 @@ function welcome(session) {
 function latest(session) {
   // Default response for subscribed users
   let article = poller.getLatestArticle();
-  let message = `Hey! Check out the latest issue of '${constants.NAME}': ${article.link}`;
+  let message = `Check out the latest issue of '${constants.NAME}': ${article.link}`;
   sendMessage(session, message);
 };
 
@@ -91,7 +94,7 @@ function tip(session) {
 };
 
 function amount(session, command) {
-  session.requestEth(constants.AMOUNTS[command], `Tip to '${constants.NAME}'`)
+  session.requestEth(constants.AMOUNTS[command], `Help support '${constants.NAME}'`)
 };
 
 function subscribe(session) {
@@ -116,10 +119,14 @@ function sendMessage(session, message) {
   if (session.get('subscribed')) {
     controls = [
       constants.CONTROLS.tip,
+      constants.CONTROLS.latest,
       constants.CONTROLS.unsubscribe
     ];
   } else {
-    controls = [constants.CONTROLS.subscribe];
+    controls = [
+      constants.CONTROLS.latest,
+      constants.CONTROLS.subscribe
+    ];
   }
   session.reply(SOFA.Message({
     body: message,
