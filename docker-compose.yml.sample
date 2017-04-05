@@ -6,9 +6,11 @@ services:
       - redis
       - postgres
     environment: &environment
-      - TOKEN_APP_USERNAME=
       - TOKEN_APP_ID=
       - TOKEN_APP_PAYMENT_ADDRESS=
+      - TOKEN_APP_USERNAME=
+      - TOKEN_APP_NAME=
+      - TOKEN_APP_AVATAR=
       - TOKEN_APP_SEED=
       - REDIS_URL=redis://h:rlcMWNrxXgqS0xM8aWCYuE0R@redis:6379
       - DATABASE_URL=postgres://token:va5uOdJBqu2dZ1@postgres:5432/token
