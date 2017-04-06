@@ -2,6 +2,7 @@ const Bot = require('./lib/Bot');
 const FeedPoller = require('./lib/FeedPoller');
 const SOFA = require('sofa-js');
 const constants = require('./lib/constants');
+const Fiat = require('./lib/Fiat');
 
 let bot = new Bot();
 let poller = new FeedPoller(bot);
@@ -82,7 +83,7 @@ function tip(session) {
   let controls = [];
   for (let key in constants.AMOUNTS) {
     let val = constants.AMOUNTS[key];
-    controls.push({type: 'button', label: `${val} ETH`, value: key})
+    controls.push({type: 'button', label: `$${val}`, value: key})
   }
   controls.push({type: 'button', label: `Cancel`, value: 'cancel'})
 
@@ -94,14 +95,17 @@ function tip(session) {
 };
 
 function amount(session, command) {
-  session.requestEth(constants.AMOUNTS[command], `Help support '${constants.NAME}'`)
+  // fetch exchange rates once a minute
+  Fiat.fetch(1000 * 1).then((toEth) => {
+    session.requestEth(toEth.USD(constants.AMOUNTS[command]), `Help support '${constants.NAME}'`)
+  });
 };
 
 function subscribe(session) {
   session.set('subscribed', true)
   poller.addUser(session);
   let article = poller.getLatestArticle();
-  let message = `Thank you for subscribing 🙌. This is a weekly newsletter, so you will receive your next update within a week. For now, check out the latest issue: ${article.link}`;
+  let message = `Thank you for subscribing 🙌. We'll notify you whenever a new article comes out (about once a week).`;
   sendMessage(session, message);
 };
 

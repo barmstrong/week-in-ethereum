@@ -24,10 +24,10 @@ const constants = {
   },
 
   AMOUNTS: {
-    amount1: 0.01,
-    amount2: 0.1,
-    amount3: 0.5,
-    amount4: 1.0,
+    amount1: 0.25,
+    amount2: 1,
+    amount3: 5,
+    amount4: 25,
   }
 }
 
