@@ -7,25 +7,10 @@ const unit = require('ethjs-unit');
 const SOFA = require('sofa-js');
 
 class Session {
-  constructor(bot, address, onReady) {
+  constructor(bot, pgPool, config, address, onReady) {
     this.bot = bot;
-    this.config = new Config(process.argv[2]);
-
-    let params = url.parse(this.config.postgres.url);
-    let auth = params.auth.split(':');
-    let pgConfig = {
-      user: auth[0],
-      password: auth[1],
-      host: params.hostname,
-      port: params.port,
-      database: params.pathname.split('/')[1],
-      max: 10,
-      idleTimeoutMillis: 30000
-    };
-    this.pgPool = new pg.Pool(pgConfig);
-    this.pgPool.on('error', function (err, client) {
-      console.error('idle client error', err.message, err.stack)
-    })
+    this.config = config;
+    this.pgPool = pgPool;
 
     if (!fs.existsSync(this.config.store)) {
       mkdirp.sync(this.config.store);
