@@ -81,6 +81,15 @@ class Session {
         value: value
       }
     }, (session, error, result) => {
+      if (result) {
+        session.reply(SOFA.Payment({
+          status: "unconfirmed",
+          value: value,
+          txHash: result.txHash,
+          fromAddress: this.config.address,
+          toAddress: this.address
+        }));
+      }
       if (callback) { callback(session, error, result); }
     });
   }
