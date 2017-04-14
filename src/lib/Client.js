@@ -1,5 +1,7 @@
 const redis = require('redis');
 const SOFA = require('sofa-js');
+const url = require('url')
+const pg = require('pg');
 const Config = require('./Config');
 const Session = require('./Session');
 const Logger = require('./Logger');
@@ -16,6 +18,22 @@ class Client {
 
     this.config = new Config(process.argv[2]);
     console.log("Address: "+this.config.address);
+
+    let params = url.parse(this.config.postgres.url);
+    let auth = params.auth.split(':');
+    let pgConfig = {
+      user: auth[0],
+      password: auth[1],
+      host: params.hostname,
+      port: params.port,
+      database: params.pathname.split('/')[1],
+      max: 5,
+      idleTimeoutMillis: 30000
+    };
+    this.pgPool = new pg.Pool(pgConfig);
+    this.pgPool.on('error', function (err, client) {
+      console.error('idle client error', err.message, err.stack)
+    })
 
     let redisConfig = {
       host: this.config.redis.host,
@@ -41,7 +59,7 @@ class Client {
       try {
         let wrapped = JSON.parse(message);
         if (wrapped.recipient == this.config.address) {
-          let session = new Session(this.bot, wrapped.sender, () => {
+          let session = new Session(this.bot, this.pgPool, this.config, wrapped.sender, () => {
             let sofa = SOFA.parse(wrapped.sofa);
             Logger.receivedMessage(sofa);
 
@@ -81,7 +99,7 @@ class Client {
         if (message.jsonrpc == JSONRPC_VERSION) {
           let stored = this.rpcCalls[message.id];
           delete this.rpcCalls[message.id];
-          let session = new Session(this.bot, stored.sessionAddress, () => {
+          let session = new Session(this.bot, this.pgPool, this.config, stored.sessionAddress, () => {
             stored.callback(session, message.error, message.result);
           });
         }
