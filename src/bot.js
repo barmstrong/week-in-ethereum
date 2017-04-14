@@ -26,11 +26,13 @@ bot.onEvent = function(session, message) {
 };
 
 function onMessage(session, message) {
-  if (session.get('subscribed')) {
-    latest(session);
-  } else {
-    welcome(session);
-  }
+  poller.isSubscribed(session.get('tokenId'), function(err, subscribed) {
+    if (subscribed) {
+      latest(session);
+    } else {
+      welcome(session);
+    }
+  });
 };
 
 function onCommand(session, command) {
@@ -40,6 +42,12 @@ function onCommand(session, command) {
       break;
     case 'tip':
       tip(session);
+      break;
+    case 'about':
+      about(session);
+      break;
+    case 'historical':
+      historical(session);
       break;
     case 'amount1':
     case 'amount2':
@@ -74,7 +82,7 @@ function welcome(session) {
 
 function latest(session) {
   // Default response for subscribed users
-  let article = poller.getLatestArticle();
+  let article = poller.latestArticle();
   let message = `Check out the latest issue of '${constants.NAME}': ${article.link}`;
   sendMessage(session, message);
 };
@@ -101,16 +109,32 @@ function amount(session, command) {
   });
 };
 
-function subscribe(session) {
-  session.set('subscribed', true)
-  poller.addUser(session);
-  let article = poller.getLatestArticle();
-  let message = `Thank you for subscribing 🙌. We'll notify you whenever a new article comes out (about once a week).`;
+function about(session) {
+  let message = `This Week In Ethereum is published by Evan Van Ness. It is a weekly collection of the latest news in the Ethereum community.`;
   sendMessage(session, message);
 };
 
+function historical(session) {
+  let message = "Here are some recent articles:\n";
+  let count = 0;
+  poller.articlesList().forEach(function(article) {
+    count = count + 1;
+    if (count > 5)
+      return
+    let date = article.date.toString().split(' ').slice(0,4).join(' ');
+    message = message + `${date}\n${article.link}\n`
+    // message = message + `${typeof(article.date)}\n${article.link}\n`
+  });
+  sendMessage(session, message);
+};
+
+function subscribe(session) {
+  poller.addUser(session);
+  session.reply(`Thank you for subscribing 🙌. We'll notify you whenever a new article comes out (about once a week).`);
+  latest(session);
+};
+
 function unsubscribe(session) {
-  session.set('subscribed', false);
   poller.removeUser(session);
   let message = '😭 sorry to see you go. We hope you come back!'
   sendMessage(session, message);
@@ -119,22 +143,18 @@ function unsubscribe(session) {
 // HELPERS
 
 function sendMessage(session, message) {
-  let controls = [];
-  if (session.get('subscribed')) {
-    controls = [
-      constants.CONTROLS.tip,
-      constants.CONTROLS.latest,
-      constants.CONTROLS.unsubscribe
-    ];
-  } else {
-    controls = [
-      constants.CONTROLS.latest,
-      constants.CONTROLS.subscribe
-    ];
-  }
-  session.reply(SOFA.Message({
-    body: message,
-    controls: controls,
-    showKeyboard: false,
-  }));
+  // redisClient.sismember('users', session.get('tokenId'), function(err, subscribed) {
+  poller.isSubscribed(session.get('tokenId'), function(err, subscribed) {
+    let controls = [];
+    if (subscribed) {
+      controls = constants.SUBSCRIBED_CONTROLS;
+    } else {
+      controls = constants.UNSUBSCRIBED_CONTROLS;
+    }
+    session.reply(SOFA.Message({
+      body: message,
+      controls: controls,
+      showKeyboard: false,
+    }));
+  });
 }
