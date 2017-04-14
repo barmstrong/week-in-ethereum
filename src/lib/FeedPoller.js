@@ -26,20 +26,7 @@ class FeedPoller {
     this.timer = setInterval(() => {
       this.getArticles();
       this.broadcast();
-      this.migrate();
-    }, 60 * 1000);
-  }
-
-  migrate() {
-    redisClient.get('users', function(err, value) {
-      let users = JSON.parse(value);
-      users.forEach(function(user) {
-        if (user.subscribed) {
-          console.log(`Migrating ${user.userId} to subscibed`);
-          redisClient.sadd('subscribed', user.userId);
-        }
-      });
-    });
+    }, 60 * 5 * 1000); // 5 minutes
   }
 
   // Broadcast to all users the latest article
