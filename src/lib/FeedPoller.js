@@ -26,7 +26,7 @@ class FeedPoller {
     this.timer = setInterval(() => {
       this.getArticles();
       this.broadcast();
-    }, 60 * 2 * 1000);
+    }, 5 * 1000);
   }
 
   broadcast() {
@@ -34,73 +34,40 @@ class FeedPoller {
     let article = this.articles[0];
     let self = this;
 
-    redisClient.get('users', function(err, value) {
-      if (err) throw(err);
-
-      let users = [];
-      let newUsers = []
-      if (value) {
-        users = JSON.parse(value);
-      }
-
+    redisClient.smembers('users', function(err, users) {
       users.forEach(function(user) {
-        if (user.subscribed && user.lastUpdate !== article.link) {
-          let message = `Hey! The latest issue of ${constants.NAME} is out: ${article.link}`;
+        redisClient.hget('last-update', user, function(err, articleId) {
+          console.log(user)
+          console.log(`article id: ${articleId}`)
+          if (articleId !== article.id) {
+            let message = `Hey! The latest issue of ${constants.NAME} is out: ${article.link}`;
 
-          self.bot.client.send(user.userId, SOFA.Message({
-            body: message,
-            controls: [constants.CONTROLS.tip, constants.CONTROLS.unsubscribe],
-            showKeyboard: false,
-          }));
+            self.bot.client.send(user, SOFA.Message({
+              body: message,
+              controls: [constants.CONTROLS.tip, constants.CONTROLS.unsubscribe],
+              showKeyboard: false,
+            }));
 
-          user.lastUpdate = article.link;
-          newUsers.push({
-            userId: user.userId,
-            lastUpdate: article.link,
-            subscribed: user.subscribed,
-          });
-        } else {
-          newUsers.push(user);
-        }
+            redisClient.hset('latest-update', user, article.id);
+          }
+        });
       });
-      redisClient.set('users', JSON.stringify(newUsers));
     });
   };
 
   addUser(session) {
     let article = this.articles[0];
-    redisClient.get('users', function(err, value) {
-      if (err) throw(err);
-
-      let users = [];
-      if (value) {
-        users = JSON.parse(value);
-      }
-      users.push({
-        userId: session.get('tokenId'),
-        lastUpdate: article.link,
-        subscribed: true,
-      });
-      redisClient.set('users', JSON.stringify(users));
-    });
+    let tokenId = session.get('tokenId');
+    console.log(`userid: ${tokenId}`);
+    redisClient.sadd('users', tokenId);
+    console.log(`article id: ${article.id}`);
+    redisClient.hset('latest-update', tokenId, article.id);
+    redisClient.hget('latest-update', tokenId, function (err, arId) { console.log(`HGET ID: ${arId}`)});
   };
 
   removeUser(session) {
-    redisClient.get('users', function(err, value) {
-      if (err) throw(err);
-
-      let users = [];
-      let newUsers = []
-      if (value) {
-        users = JSON.parse(value);
-      }
-      users.forEach(function(user) {
-        if (user.userId !== session['tokenId']) {
-          newUsers.push(user);
-        }
-      });
-      redisClient.set('users', JSON.stringify(newUsers));
-    });
+    let tokenId = session.get('tokenId');
+    redisClient.srem('users', tokenId);
   };
 
   getArticles() {
@@ -128,6 +95,7 @@ class FeedPoller {
 
       while (item = this.read()) {
         article = {
+          id: item['guid'],
           title: item['title'],
           link: item['link'],
           date: item['date'],
