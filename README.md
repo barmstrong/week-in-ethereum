@@ -1,4 +1,4 @@
-# Token app for "Week In Ethereum Blog"
+# Toshi app for "Week In Ethereum Blog"
 
 http://www.weekinethereum.com/
 
